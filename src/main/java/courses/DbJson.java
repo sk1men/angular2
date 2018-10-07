@@ -8,6 +8,9 @@ import java.util.List;
 public class DbJson {
 
     private List<Course> courses;
+    private List<Object> login;
+    private List<Object> profiles;
+    private Object status;
 
     public DbJson(List<Course> course) {
         this.courses = course;

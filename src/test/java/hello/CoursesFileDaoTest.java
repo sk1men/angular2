@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 
 public class CoursesFileDaoTest {
 
@@ -75,5 +77,81 @@ public class CoursesFileDaoTest {
         List<Course> actualList = new CoursesFileDao().listCourses();
 
         assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    public void shouldAddCoursesToFile() {
+        Course newCourse = new Course(1,
+                "Testing course",
+                "Mockito testing",
+                "video",
+                "2019-01-01",
+                9000,
+                true);
+        CoursesFileDao dao = new CoursesFileDao();
+
+        Course savedCourse = dao.save(newCourse);
+
+        assertEquals(8, dao.listCourses().size());
+        assertEquals(savedCourse, dao.find(savedCourse.getId()));
+        dao.delete(savedCourse.getId());
+    }
+
+    @Test
+    public void shouldReturnCourseById() {
+        Course expectedCourse = new Course(1,
+                "Angular 2 Basics",
+                "Introduction to Angular 2",
+                "video",
+                "2019-01-01",
+                9000,
+                true);
+        CoursesFileDao dao = new CoursesFileDao();
+
+        Course actualCourse = dao.find(1L);
+
+        assertEquals(expectedCourse, actualCourse);
+    }
+
+    @Test
+    public void shouldDeleteCourseById() {
+        CoursesFileDao dao = new CoursesFileDao();
+        Course courseToDelete = dao.save(new Course(0,
+                "Testing course",
+                "Mockito testing",
+                "video",
+                "2019-01-01",
+                9000,
+                true));
+        int oldSize = dao.listCourses().size();
+        long courseToDeleteId = courseToDelete.getId();
+
+        Course deletedCourse = dao.delete(courseToDeleteId);
+
+        assertEquals(oldSize - 1, dao.listCourses().size());
+        assertEquals(deletedCourse, courseToDelete);
+        assertNull(dao.find(courseToDeleteId));
+    }
+
+    @Test
+    public void shouldReplaceCourseByIdAndValue() {
+        long courseId = 2;
+        CoursesFileDao dao = new CoursesFileDao();
+        Course oldCourse = dao.find(courseId);
+        Course expectedCourse = new Course(
+                courseId,
+                "name",
+                "multiline\r\ndescription",
+                "text",
+                "2000-01-01",
+                60000,
+                !oldCourse.isTopRated());
+
+        Course updated = dao.update(courseId, expectedCourse);
+
+        assertEquals(expectedCourse, updated);
+        assertEquals(expectedCourse, dao.find(courseId));
+        assertNotEquals(expectedCourse, oldCourse);
+        dao.update(courseId, oldCourse);
     }
 }
