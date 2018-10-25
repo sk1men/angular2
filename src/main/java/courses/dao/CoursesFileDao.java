@@ -1,9 +1,9 @@
-package hello;
+package courses.dao;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gson.Gson;
-import courses.Course;
-import courses.DbJson;
+import courses.model.Course;
+import courses.model.DbJson;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
@@ -113,7 +113,7 @@ public class CoursesFileDao implements CoursesDao {
             return FileUtils.readFileToString(new File(JSON_FILE_PATH), "UTF-8");
         } catch (IOException e) {
             logger.atWarning().withCause(e).log("Exception reading from %s file", JSON_FILE_PATH);
-            throw new IllegalStateException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -122,7 +122,7 @@ public class CoursesFileDao implements CoursesDao {
             FileUtils.writeStringToFile(new File(JSON_FILE_PATH), GSON.toJson(dbJson));
         } catch (IOException e) {
             logger.atWarning().withCause(e).log("Exception writing to %s file", JSON_FILE_PATH);
-            throw new IllegalStateException(e);
+            throw new DaoException(e);
         }
     }
 }

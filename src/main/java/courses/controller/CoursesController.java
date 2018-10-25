@@ -1,7 +1,8 @@
-package hello;
+package courses.controller;
 
 import com.google.common.flogger.FluentLogger;
-import courses.Course;
+import courses.model.Course;
+import courses.dao.CoursesDao;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,12 @@ import java.util.List;
  * Controller to process REST requests for courses resource.
  */
 @RestController
-public class CoursesController {
+class CoursesController {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private final CoursesDao coursesDao;
 
-    CoursesController(@Qualifier("coursesFileDao") CoursesDao coursesDao) {
+    CoursesController(@Qualifier("coursesJdbcTemplateDao") CoursesDao coursesDao) {
         this.coursesDao = coursesDao;
     }
 

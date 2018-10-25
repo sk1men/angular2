@@ -1,6 +1,6 @@
-package hello;
+package courses.dao;
 
-import courses.Course;
+import courses.model.Course;
 import org.junit.Test;
 
 import java.util.Arrays;

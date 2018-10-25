@@ -1,6 +1,7 @@
-package hello;
+package courses.controller;
 
-import courses.Course;
+import courses.model.Course;
+import courses.dao.CoursesDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
